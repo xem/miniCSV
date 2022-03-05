@@ -1,0 +1,42 @@
+﻿<tt>
+<h2>MiniCSV</h2>
+
+<p>Inspired by @samthor's <a href="https://whistlr.info/2022/code-golf-csv/">code-golf-csv</a>
+<br>
+<br>
+<p>Parse:
+<br>
+<br>
+<mark style="background:#444;color:#fff;padding:5px">parse=(s,S=[])=>s.replace(/"[^]*?("|$)/g,a=>(S.push(a),"©")).split`n`.map(y=>y.split`,`.map(z=>z.replace(/©/g,a=>S.shift()).replace(/^"([^]*)"$/,"$1")))</mark>
+<br>
+<br>
+<br>
+<br>
+<p>Build:
+<br>
+<br>
+<mark style="background:#444;color:#fff;padding:5px">build=a=>a.map(y=>y.map(z=>/,|\n/.test(z)?`"${z}"`:z).join`,`).join`\n`</mark>
+
+<script>
+
+// Parse
+// =====
+
+parse=(s,S=[])=>s.replace(/"[^]*?("|$)/g,a=>(S.push(a),"©")).split`n`.map(y=>y.split`,`.map(z=>z.replace(/©/g,a=>S.shift()).replace(/^"([^]*)"$/,"$1")))
+
+console.log(1, JSON.stringify(parse(`a,b,c\n"f"oo","bar""?",zin""g\n"what""""x"`))); // [['a', 'b', 'c'], ['f"oo', 'bar"?', 'zin""g'], ['what""x']]
+console.log(2, JSON.stringify(parse(`"hello tehre lol,what\nzing`)));  // [['hello tehre lol,what\nzing']]
+console.log(3, JSON.stringify(parse(`"hello
+there",123
+456`))); // [['hello\nthere', '123'],['456']]
+console.log(4, JSON.stringify(parse(`\n`))); // [[],[]] or [[""],[""]]
+
+
+// Build
+// =====
+
+build=a=>a.map(y=>y.map(z=>/,|\n/.test(z)?`"${z}"`:z).join`,`).join`\n`
+
+console.log(1, build([['1,', '2\na', 3],[1]])); // '"1,","2\na",3\n1'
+
+</script>
