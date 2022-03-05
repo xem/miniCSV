@@ -7,15 +7,13 @@
 <p>Parse:
 <br>
 <br>
-<mark style="background:#444;color:#fff;padding:5px">parse=(s,S=[])=>s.replace(/"[^]*?("|$)/g,a=>(S.push(a),"©")).split`n`.map(y=>y.split`,`.map(z=>z.replace(/©/g,a=>S.shift()).replace(/^"([^]*)"$/,"$1")))</mark>
-<br>
-<br>
+<textarea readonly style="width:600px;height:60px;background:#444;color:#fff;padding:5px;resize:none">parse=(s,S=[])=>s.replace(/"[^]*?("|$)/g,a=>(S.push(a),"©")).split`n`.map(y=>y.split`,`.map(z=>z.replace(/©/g,a=>S.shift()).replace(/^"([^]*)"$/,"$1")))</textarea>
 <br>
 <br>
 <p>Build:
 <br>
 <br>
-<mark style="background:#444;color:#fff;padding:5px">build=a=>a.map(y=>y.map(z=>/,|\n/.test(z)?`"${z}"`:z).join`,`).join`\n`</mark>
+<textarea readonly style="width:600px;background:#444;color:#fff;padding:5px;resize:none">build=a=>a.map(y=>y.map(z=>/,|\n/.test(z)?`"${z}"`:z).join`,`).join`\n`</textarea>
 
 <script>
 
