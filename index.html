@@ -7,7 +7,7 @@
 <p>Parse:
 <br>
 <br>
-<textarea readonly style="width:600px;height:60px;background:#444;color:#fff;padding:5px;resize:none">parse=(s,S=[])=>s.replace(/"[^]*?("|$)/g,a=>(S.push(a),"©")).split`n`.map(y=>y.split`,`.map(z=>z.replace(/©/g,a=>S.shift()).replace(/^"([^]*)"$/,"$1")))</textarea>
+<textarea readonly style="width:600px;height:60px;background:#444;color:#fff;padding:5px;resize:none">parse=s=>s.replace(/"[^"]*"?/g,a=>s.push(a)&&'"',s=[]).split`\n`.map(y=>y.split`,`.map(z=>z.replace(/"/g,a=>s.shift()).replace(/"([^]?)/g,"$1")))</textarea>
 <br>
 <br>
 <p>Build:
@@ -20,14 +20,16 @@
 // Parse
 // =====
 
-parse=(s,S=[])=>s.replace(/"[^]*?("|$)/g,a=>(S.push(a),"©")).split`n`.map(y=>y.split`,`.map(z=>z.replace(/©/g,a=>S.shift()).replace(/^"([^]*)"$/,"$1")))
+parse=s=>s.replace(/"[^"]*"?/g,a=>s.push(a)&&'"',s=[]).split`\n`.map(y=>y.split`,`.map(z=>z.replace(/"/g,a=>s.shift()).replace(/"([^]?)/g,"$1")))
 
-console.log(1, JSON.stringify(parse(`a,b,c\n"f"oo","bar""?",zin""g\n"what""""x"`))); // [['a', 'b', 'c'], ['f"oo', 'bar"?', 'zin""g'], ['what""x']]
-console.log(2, JSON.stringify(parse(`"hello tehre lol,what\nzing`)));  // [['hello tehre lol,what\nzing']]
-console.log(3, JSON.stringify(parse(`"hello
-there",123
-456`))); // [['hello\nthere', '123'],['456']]
-console.log(4, JSON.stringify(parse(`\n`))); // [[],[]] or [[""],[""]]
+
+console.table(parse(`1,2,3
+"one","two",mi"xe"d
+"""quotes""inside"""
+"1:"" 2:"""" 3:"""""" 4:"""""""""
+"new\nline",dangling quote"`))
+
+console.table(parse(`\n`)); // [[],[]] or [[""],[""]]
 
 
 // Build
@@ -35,6 +37,6 @@ console.log(4, JSON.stringify(parse(`\n`))); // [[],[]] or [[""],[""]]
 
 build=a=>a.map(y=>y.map(z=>/,|\n/.test(z)?`"${z}"`:z).join`,`).join`\n`
 
-console.log(1, build([['1,', '2\na', 3],[1]])); // '"1,","2\na",3\n1'
+console.log(build([['1,', '2\na', 3],[1]])); // '"1,","2\na",3\n1'
 
 </script>
